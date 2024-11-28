@@ -1,0 +1,148 @@
+@startuml
+
+!include ./libs-plantuml.puml
+
+' Domain events:
+
+' 奖金文件已上传
+
+DomainEvent('Event_BonusFileUploaded')[
+        奖金文件已上传
+]
+
+' 内容已创建
+' 内容已启用
+' 内容已禁用
+
+DomainEvent('Event_ContentCreated')[
+        内容已创建
+]
+
+DomainEvent('Event_ContentEnabled')[
+        内容已启用
+]
+
+DomainEvent('Event_ContentUnabled')[
+        内容已禁用
+]
+
+' 模板已创建
+' 模板草稿已创建
+' 模板已启用
+' 模板已禁用
+' 模板已删除
+' 模板截至时间已设置
+
+DomainEvent('Event_TemplateCreated')[
+        模板已创建
+]
+
+DomainEvent('Event_TemplateDraftCreated')[
+        模板草稿已创建
+]
+
+DomainEvent('Event_TemplateEnabled')[
+        模板已启用
+]
+
+DomainEvent('Event_TemplateUnabled')[
+        模板已禁用
+]
+
+DomainEvent('Event_TemplateDeleted')[
+        模板已删除
+]
+
+DomainEvent('Event_TemplateFinishTimeSeted')[
+        模板截至时间已设置
+]
+
+' 申请单已申请
+' 申请单已分配
+' 申请单已通过
+' 申请单已拒绝
+' 申请单子项已通过
+' 申请单子项已拒绝
+' 申请单已转交审批员
+' 申请单已转交HR
+' 申请单已锁定
+' 申请单已解锁
+' 申请单已终审
+' 申请单附件已补充
+' 人员委托状态已设置
+' 人员委托状态已撤销
+' 申请单已委托
+' 申请单委托已撤销
+' 申请单已撤销
+
+
+DomainEvent('Event_ApplyCreated')[
+        申请单已申请
+]
+
+DomainEvent('Event_ApplyDistributed')[
+        申请单已分配
+]
+
+DomainEvent('Event_ApplyPassed')[
+        申请单已通过
+]
+
+DomainEvent('Event_ApplyRejected')[
+        申请单已拒绝
+]
+
+DomainEvent('Event_ApplyItemPassed') [
+        申请单子项已通过
+]
+
+DomainEvent('Event_ApplyItemRejected')[
+        申请单子项已拒绝
+]
+
+DomainEvent('Event_ApplyTrans2Next')[
+        申请单已转交审批员
+]
+
+DomainEvent('Event_ApplyTrans2HR')[
+        申请单已转交HR
+]
+
+DomainEvent('Event_ApplyLocked')[
+        申请单已锁定
+]
+
+DomainEvent('Event_ApplyUnlocked')[
+        申请单已解锁
+]
+
+DomainEvent('Event_ApplyCompleted')[
+        申请单已终审
+]
+
+DomainEvent('Event_ApplyFileReloaded')[
+        申请单附件已补充
+]
+
+DomainEvent('Event_PersonDeputed') [
+        人员委托状态已设置
+]
+
+DomainEvent('Event_PersonDeprived') [
+        人员委托状态已撤销
+]
+
+DomainEvent('Event_ApplyDeputed')[
+        申请单已委托
+]
+
+DomainEvent('Event_ApplyDeprived') [
+        申请单委托已撤销
+]
+
+DomainEvent('Event_ApplyCancelled')[
+        申请单已撤销
+]
+
+
+@enduml

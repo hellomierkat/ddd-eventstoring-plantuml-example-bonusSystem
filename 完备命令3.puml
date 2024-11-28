@@ -1,0 +1,437 @@
+@startuml
+
+!include ./libs-plantuml.puml
+
+' Domain events:
+
+' 奖金文件已上传
+
+DomainEvent('Event_BonusFileUploaded')[
+        奖金文件已上传
+]
+
+' 内容已创建
+' 内容已启用
+' 内容已禁用
+
+DomainEvent('Event_ContentCreated')[
+        内容已创建
+]
+
+DomainEvent('Event_ContentEnabled')[
+        内容已启用
+]
+
+DomainEvent('Event_ContentUnabled')[
+        内容已禁用
+]
+
+' 模板已创建
+' 模板草稿已创建
+' 模板已启用
+' 模板已禁用
+' 模板已删除
+' 模板截至时间已设置
+
+DomainEvent('Event_TemplateCreated')[
+        模板已创建
+]
+
+DomainEvent('Event_TemplateDraftCreated')[
+        模板草稿已创建
+]
+
+DomainEvent('Event_TemplateEnabled')[
+        模板已启用
+]
+
+DomainEvent('Event_TemplateUnabled')[
+        模板已禁用
+]
+
+DomainEvent('Event_TemplateDeleted')[
+        模板已删除
+]
+
+DomainEvent('Event_TemplateFinishTimeSeted')[
+        模板截至时间已设置
+]
+
+' 申请单已申请
+' 申请单已分配
+' 申请单已通过
+' 申请单已拒绝
+' 申请单子项已通过
+' 申请单子项已拒绝
+' 申请单已转交审批员
+' 申请单已转交HR
+' 申请单已锁定
+' 申请单已解锁
+' 申请单已终审
+' 申请单附件已补充
+' 人员委托状态已设置
+' 人员委托状态已撤销
+' 申请单已委托
+' 申请单委托已撤销
+' 申请单已撤销
+
+DomainEvent('Event_ApplyCreated')[
+        申请单已申请
+]
+
+DomainEvent('Event_ApplyDistributed')[
+        申请单已分配
+]
+
+DomainEvent('Event_ApplyPassed')[
+        申请单已通过
+]
+
+DomainEvent('Event_ApplyRejected')[
+        申请单已拒绝
+]
+
+DomainEvent('Event_ApplyItemPassed') [
+        申请单子项已通过
+]
+
+DomainEvent('Event_ApplyItemRejected')[
+        申请单子项已拒绝
+]
+
+DomainEvent('Event_ApplyTrans2Next')[
+        申请单已转交审批员
+]
+
+DomainEvent('Event_ApplyTrans2HR')[
+        申请单已转交HR
+]
+
+DomainEvent('Event_ApplyLocked')[
+        申请单已锁定
+]
+
+DomainEvent('Event_ApplyUnlocked')[
+        申请单已解锁
+]
+
+DomainEvent('Event_ApplyCompleted')[
+        申请单已终审
+]
+
+DomainEvent('Event_ApplyFileReloaded')[
+        申请单附件已补充
+]
+
+DomainEvent('Event_EntrustmentSetted') [
+        人员委托已设置
+]
+
+DomainEvent('Event_EntrustmentCanceled') [
+        人员委托已撤销
+]
+
+DomainEvent('Event_ApplyDeputed')[
+        申请单已委托
+]
+
+DomainEvent('Event_ApplyDeprived') [
+        申请单委托已撤销
+]
+
+DomainEvent('Event_ApplyCancelled')[
+        申请单已撤销
+]
+
+
+
+' Commands:
+
+' 上传奖金文件
+
+Command('Command_UploadBonusFile')[
+        上传奖金文件
+        --
+        标题
+        有效起止时间
+        文件集合
+        -- rules --
+        1, 标题必填
+        2, 起止时间必填
+        3, 图片至少一个, 且每张图大小不能超过3M
+]
+
+' 创建内容
+' 启用内容
+' 禁用内容
+
+Command('Command_CreateContent')[
+        创建内容
+        --
+        名称
+        大类/小类/规则
+        创建是否默认勾选
+        内容来源
+        备注
+        -- rules --
+        1, 名称、类型、创建勾选、内容来源必填
+        2, 创建后默认未启用状态
+        3, 创建后不可编辑
+]
+
+Command('Command_EnableContent')[
+        启用内容
+        --
+        内容
+        -- rules --
+        1, 内容为非启用状态
+]
+
+Command('Command_UnableContent')[
+        禁用内容
+        --
+        内容
+        -- rules --
+        1, 内容为启用状态
+]
+
+
+' 创建模板
+' 创建模板草稿
+' 设置模板截至时间
+' 批量设置模板截至时间
+' 启用模板
+' 禁用模板
+' 删除模板
+
+Command('Command_CreateTemplate')[
+        创建模板
+        --
+        内容集合
+        模板名称
+        模板描述
+        当月发放截止时间
+        是否启用模板
+        是否开启附件
+        -- rules --
+        1, 内容集合都为启用状态
+        2, 模板名称必填
+        3, 模板描述选填
+        4, 当月发放截止时间必填
+        5, 是否启用模板 默认【不启用】
+        6, 是否开启附件 默认【启用】
+]
+
+Command('Command_CreateTemplateDraft') [
+        创建模板草稿
+        --
+        内容集合
+        模板名称
+        模板描述
+        当月发放截止时间
+        是否启用模板
+        是否开启附件
+        -- rules --
+        1, 内容集合都为启用状态
+        2, 模板名称必填
+        3, 模板描述选填
+        4, 当月发放截止时间必填
+        5, 是否启用模板 默认【不启用】
+        6, 是否开启附件 默认【启用】
+]
+
+
+Command('Command_SetTemplateFinishTime')[
+        设置模板截至时间
+        --
+        模板
+        -- rules --
+        1, 允许设置的模板的状态为【启用/禁用】
+        2, 不影响该模板下已生成的数据
+]
+
+Command('Command_SetTemplateFinishTimeBatch')[
+        批量设置模板截至时间
+        --
+        模板列表
+        -- rules --
+        1, 允许设置的模板的状态为【启用/禁用】
+        2, 不影响该模板下已生成的数据
+]
+
+Command('Command_EnableTemplate')[
+        启用模板
+        --
+        模板
+        -- rules --
+        1, 模板状态为禁用
+]
+
+Command('Command_UnableTemplate')[
+        禁用模板
+        --
+        模板
+        -- rules --
+        1, 模板状态为启用
+]
+
+Command('Command_DeleteTemplate')[
+        删除模板
+        --
+        模板
+        -- rules --
+        1, 模板未产生任何的数据可删除
+]
+
+' 创建申请单
+' 撤销申请单
+' 通过申请单
+' 拒绝申请单
+' 通过申请单子项
+' 拒绝申请单子项
+' 锁定申请单
+' 解锁申请单
+' 补充附件
+' 完结申请单
+
+Command('Command_CreateApply')[
+        创建申请单
+        --
+        自定义名称（用于用户自己觉得该奖金是什么名字，同时管控由于模板名称修改造成的理解误差）
+        归属年月（用于用户自觉得本次申请的奖金归属年月，方便后续统计）
+        内容列表
+        审批人列表（将会按照顺序依次审批）
+        -- rules --
+        1, 申请的奖金模板为启用状态
+        2, 自定义名称必填
+        3, 归属年月必填
+        4, 审批人至少填写一个
+        5, 要求附件的模板, 附件必填
+]
+
+
+Command('Command_CancelApply') [
+        撤销申请单
+        --
+        申请单
+        -- rules --
+        1, 操作人必须为申请单本人
+        2, 申请单必须没有被审核员审核过
+]
+
+Command('Command_PassApply')[
+        通过申请单
+        --
+        申请单
+        -- rules --
+        1, 审批意见必填
+        2, 操作人为当前审批员 （或委托对象）
+        3, 最后一个审批员操作后, 申请单状态转为【等待HR审核状态】
+]
+
+Command('Command_RejectApply')[
+        拒绝申请单
+        --
+        申请单
+        -- rules --
+        1, 审批意见必填
+        2, 操作人为当前审批员 （或委托对象）
+        3, 任意一个审批员操作后，申请单将被拒绝，该申请单最终状态将设置为【拒绝】
+]
+
+Command('Command_PassApplyItem') [
+        通过申请单子项
+        --
+        申请单
+        申请单子项
+        -- rules --
+        1, 操作人角色需HR（或其委托对象）,非委托状态不可操作
+        2, 操作前状态需要为 无/拒绝 状态
+        3, 可多次进行本操作
+        4, 初次操作，申请单将被设置为锁定状态
+]
+
+Commond('Command_RejectApplyItem')[
+        拒绝申请单子项
+        --
+        申请单
+        申请单子项
+        -- rules --
+        1, 操作人角色需HR（或其委托对象）,非委托状态不可操作
+        2, 操作前状态需要为 无/通过 状态
+        3, 可多次进行本操作
+        4, 初次操作，申请单将被设置为锁定状态
+]
+
+Command('Command_LockApply')[
+        锁定申请单
+        --
+        申请单
+        -- rules --
+        1, 操作员角色为HR
+        2, 申请单状态为未锁定
+        3, 操作人需非委托状态
+]
+
+Command('Command_UnlockApply')[
+        解锁申请单
+        --
+        申请单
+        -- rules --
+        1, 操作员角色为HR
+        2, 申请单状态为已锁定
+        3, 操作人需非委托状态
+]
+
+Command('Command_ReloadApplyFile')[
+        补充附件
+        --
+        申请单
+        附件文件
+        -- rules --
+        1, 操作员为申请人
+        2, 申请单状态为【等待补充附件】
+]
+
+Command('Command_CompleteApply')[
+        完结申请单
+        --
+        申请单
+        --
+        1, 操作员必须为HR
+        2, 操作前HR必须对象申请单进行通过/拒绝操作
+        3, 选择奖金发放月
+        4, 选择公司发布的文件归属（文件管理）
+        5, 选择分类所属
+        6, 必填审批意见
+]
+
+Command('Command_SetEntrustment') [
+        设置委托
+        --
+        操作人
+        目标
+        委托人
+        （操作人设置目标的委托人）
+        -- rules --
+        1, 操作人需要是审批员或HR, 自己可以设置自己的状态, HR可设置审批员的委托, 不可出现同级相互设置
+        2, 目标目前不能是委托状态
+        3, 委托人不能是委托状态
+        4, 目标和委托人不能是同一个人
+        5, 设置目标委托后，目标持有的所有单，将暂时交由委托人处理，委托人处理的日志添加【委托*标记】
+]
+
+Command('Command_CancelEntrustment') [
+        撤销委托
+        --
+        操作人
+        目标
+        --
+        1, 操作人需要是审批员或HR, 自己可以设置自己的状态, HR可设置审批员的委托, 不可出现同级相互设置
+        2, 目标需要是委托状态
+        3, 撤销委托后，被委托的且处于持有状态的申请单将交由目标持有
+]
+
+
+
+@enduml
